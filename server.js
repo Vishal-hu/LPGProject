@@ -29,7 +29,6 @@ mongoose.connect(
 
 app.get('/index', async (req, res) => {
     res.send('Hello')
-    console.log(process.env.NAME);
 })
 
 app.listen(PORT, function () {
