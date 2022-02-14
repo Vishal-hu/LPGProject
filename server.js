@@ -27,7 +27,7 @@ mongoose.connect(
     }
 );
 
-app.get('/', async (req, res) => {
+app.get('/index', async (req, res) => {
     res.send('Hello')
     console.log(process.env.NAME);
 })
