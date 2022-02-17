@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     address: String,
     mobile: String,
     emailID: String,
-    orders: [mongoose.Types.ObjectId],
+    orders: [{type:mongoose.Types.ObjectId,ref: 'order'}],
     aadhar: String,
     created_at: {
         type: Date,

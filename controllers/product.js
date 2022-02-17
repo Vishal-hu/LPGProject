@@ -23,6 +23,7 @@ router.post('/add-product', async (req, res) => {
     const product_name = (req.body.product_name).toLowerCase();
     const product_price = req.body.product_price;
     const product_description = req.body.product_description;
+    const productImageURL = req.body.productImageURL;
 
     const productFound = await ProductModel.findOne({ product_name: product_name })
     if (productFound) {
@@ -31,7 +32,8 @@ router.post('/add-product', async (req, res) => {
         await ProductModel.insertMany({
             product_name,
             product_price,
-            product_description
+            product_description,
+            productImageURL
         })
         res.send({ msg: 'Product added' })
     }
@@ -42,12 +44,13 @@ router.post('/modify-product', async (req, res) => {
     const product_name = (req.body.product_name).toLowerCase();
     const product_price = req.body.product_price;
     const product_description = req.body.product_description;
+    const productImageURL = req.body.productImageURL;
 
     const productFound = await ProductModel.findOne({ product_name: product_name })
     if (productFound) {
         await ProductModel.updateOne({
             product_name: product_name
-        }, { $set: { product_price: product_price, product_description: product_description } })
+        }, { $set: { product_price: product_price, product_description: product_description, productImageURL: productImageURL } })
         res.send({ msg: 'Product Updated' })
     } else {
         res.send({ msg: 'Product name not matches' })
@@ -56,12 +59,18 @@ router.post('/modify-product', async (req, res) => {
 router.get('/delete-product', async (req, res) => {
     const id = req.query.id;
     if (id) {
-        await ProductModel.deleteOne({
-            _id: id
-        })
-        res.send({ msg: 'Product deleted' })
+        const idFound = await ProductModel.findById(id);
+        if (idFound) {
+            await ProductModel.deleteOne({
+                _id: id
+            })
+            res.send({ msg: 'Product deleted' })
+        } else {
+            res.send({ msg: 'Requested Id not found' })
+        }
     } else {
-        res.send({ msg: 'Provide an id to delete in query' })
+        res.send({ msg: "Provide an id to be deleted" })
     }
+
 })
 module.exports = router;

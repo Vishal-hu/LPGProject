@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 require("../models/user");
+require("../models/order");
 const UserModel = mongoose.model("user");
-
+const OrderModel = mongoose.model("order");
 
 router.post("/add-user", async function (req, res) {
     const name = req.body.name;
@@ -11,33 +12,44 @@ router.post("/add-user", async function (req, res) {
     const mobile = req.body.mobile;
     const emailID = req.body.email;
     const aadhar = req.body.aadhar;
+    const order = req.body.orders;
     let isExist = await UserModel.findOne({
         email: req.body.email,
     });
     if (isExist) {
-        res.sendError("User Already Exist");
-        return;
+        const insertedOrder = await OrderModel.insertMany({
+            cartProducts: order[0].cartProducts,
+            order_price: order[0].order_price
+        })
+        await UserModel.updateOne({ emailID: emailID }, { $push: { orders: insertedOrder[0]._id } })
+        res.send({msg:"Order Saved"});
     } else {
+        const insertedOrder = await OrderModel.insertMany({
+            cartProducts: order[0].cartProducts,
+            order_price: order[0].order_price
+        })
         await UserModel.insertMany({
             name,
             address,
             mobile,
             emailID,
-            aadhar
+            aadhar,
+            orders: insertedOrder[0]._id
         })
-        res.send('User created')
+        res.send({msg:'Order Saved'})
     }
 });
 
 
 
 router.get("/getusers", async function (req, res) {
-    let users = await UserModel.find({});
+    let users = await UserModel.find({}).populate("orders");
     res.send(users);
 });
 
-router.get("/getuserbyId/:id", async function (req, res) {
-    let user = await UserModel.findById({ _id: req.params.id });
+router.get("/getuserbyId", async function (req, res) {
+    const id = req.query.id;
+    let user = await UserModel.findById({ _id: id }).populate("orders");
     res.send(user);
 });
 
@@ -47,12 +59,12 @@ router.post("/update-user", async function (req, res) {
     const mobile = req.body.mobile;
     const emailID = req.body.email;
     const aadhar = req.body.aadhar;
-    const isExist = await UserModel.findOne({ email: req.body.email });
+    const isExist = await UserModel.findOne({ emailID: emailID });
 
     if (isExist) {
         let userUpdated = await UserModel.updateOne(
             {
-                emailID: req.body.email,
+                emailID: emailID,
             },
             {
                 $set: {
@@ -66,7 +78,7 @@ router.post("/update-user", async function (req, res) {
         );
         res.send(userUpdated);
     } else {
-        res.sendError("User does not exist");
+        res.send({msg:"User does not exist"});
     }
 });
 
