@@ -13,16 +13,18 @@ router.post("/add-user", async function (req, res) {
     const emailID = req.body.email;
     const aadhar = req.body.aadhar;
     const order = req.body.orders;
+    const gstNumber = req.body.gstNumber;
+    const companyName = req.body.companyName;
     let isExist = await UserModel.findOne({
-        email: req.body.email,
+        mobile: req.body.mobile,
     });
     if (isExist) {
         const insertedOrder = await OrderModel.insertMany({
             cartProducts: order[0].cartProducts,
             order_price: order[0].order_price
         })
-        await UserModel.updateOne({ emailID: emailID }, { $push: { orders: insertedOrder[0]._id } })
-        res.send({msg:"Order Saved"});
+        await UserModel.updateOne({ mobile: mobile }, { $push: { orders: insertedOrder[0]._id } })
+        res.send({ msg: "Order Saved" });
     } else {
         const insertedOrder = await OrderModel.insertMany({
             cartProducts: order[0].cartProducts,
@@ -34,9 +36,11 @@ router.post("/add-user", async function (req, res) {
             mobile,
             emailID,
             aadhar,
+            gstNumber,
+            companyName,
             orders: insertedOrder[0]._id
         })
-        res.send({msg:'Order Saved'})
+        res.send({ msg: 'Order Saved' })
     }
 });
 
@@ -64,7 +68,7 @@ router.post("/update-user", async function (req, res) {
     if (isExist) {
         let userUpdated = await UserModel.updateOne(
             {
-                emailID: emailID,
+                mobile: mobile,
             },
             {
                 $set: {
@@ -78,7 +82,7 @@ router.post("/update-user", async function (req, res) {
         );
         res.send(userUpdated);
     } else {
-        res.send({msg:"User does not exist"});
+        res.send({ msg: "User does not exist" });
     }
 });
 
