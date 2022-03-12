@@ -3,16 +3,27 @@ const express = require("express");
 const router = express.Router();
 require("../models/user");
 require("../models/order");
+require("../models/admin");
 const UserModel = mongoose.model("user");
 const OrderModel = mongoose.model("order");
+const AdminModel = mongoose.model("admin")
 
+router.post('/create-admin',async(req, res)=>{
+    const username = req.body.username;
+    const password = req.body.password;
+    await AdminModel.insertMany({
+        username,
+        password
+    })
+    res.send({success:true, msg:'user created'})
+})
 router.post("/add-user", async function (req, res) {
     const name = req.body.name;
     const address = req.body.address;
     const mobile = req.body.mobile;
     const emailID = req.body.email;
     const aadhar = req.body.aadhar;
-    const order = req.body.orders;
+    // const order = req.body.orders;
     const gstNumber = req.body.gstNumber;
     const companyName = req.body.companyName;
     let isExist = await UserModel.findOne({

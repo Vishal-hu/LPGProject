@@ -37,10 +37,9 @@ app.listen(port, function () {
 
 
 const user = require("./controllers/user");
-const product = require("./controllers/product");
+const admin = require("./controllers/admin");
 const otpcalls = require("./controllers/otpcalls");
-const location = require('./controllers/location');
 app.use("/user", user);
-app.use("/product", product);
+app.use("/admin", admin);
 app.use("/otp", otpcalls);
-app.use("/location", location);
+
