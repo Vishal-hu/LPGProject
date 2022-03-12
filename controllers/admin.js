@@ -5,17 +5,14 @@ require("../models/product");
 const ProductModel = mongoose.model("product");
 require("../models/location");
 const LocationModel = mongoose.model("location")
-router.get('/get-products', async (req, res) => {
-    const productFound = await ProductModel.find({})
-    res.send({ productFound })
-})
+
 const appName = 'LpgApp';
 const version = '1.0';
 router.post('/products', async (req, res) => {
     if (req.body.appName == appName && req.body.version == version) {
-        if(req.body.servicename == 'getProducts'){
+        if (req.body.servicename == 'getProducts') {
             const products = await ProductModel.find({})
-            res.send({success:true, products:products})
+            res.send({ success: true, products: products })
         }
         //getProductById service
         else if (req.body.servicename == 'getProductById') {
@@ -144,6 +141,8 @@ router.post('/location', async (req, res) => {
             } else {
                 res.send({ sucess: false, msg: 'provide an id to be deleted' })
             }
+        } else {
+            res.send({ success: false, msg: 'Please! provide a valid servicename' })
         }
     } else {
         res.send({ success: false, msg: 'Invalid AppName or Version' })

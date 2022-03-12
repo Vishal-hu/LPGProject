@@ -8,93 +8,90 @@ const UserModel = mongoose.model("user");
 const OrderModel = mongoose.model("order");
 const AdminModel = mongoose.model("admin")
 
-router.post('/create-admin',async(req, res)=>{
+router.post('/create-admin', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     await AdminModel.insertMany({
         username,
         password
     })
-    res.send({success:true, msg:'user created'})
+    res.send({ success: true, msg: 'user created' })
 })
-router.post("/add-user", async function (req, res) {
-    const name = req.body.name;
-    const address = req.body.address;
-    const mobile = req.body.mobile;
-    const emailID = req.body.email;
-    const aadhar = req.body.aadhar;
-    // const order = req.body.orders;
-    const gstNumber = req.body.gstNumber;
-    const companyName = req.body.companyName;
-    let isExist = await UserModel.findOne({
-        mobile: req.body.mobile,
-    });
-    if (isExist) {
-        const insertedOrder = await OrderModel.insertMany({
-            cartProducts: order[0].cartProducts,
-            order_price: order[0].order_price
-        })
-        await UserModel.updateOne({ mobile: mobile }, { $push: { orders: insertedOrder[0]._id } })
-        res.send({ msg: "Order Saved" });
-    } else {
-        const insertedOrder = await OrderModel.insertMany({
-            cartProducts: order[0].cartProducts,
-            order_price: order[0].order_price
-        })
-        await UserModel.insertMany({
-            name,
-            address,
-            mobile,
-            emailID,
-            aadhar,
-            gstNumber,
-            companyName,
-            orders: insertedOrder[0]._id
-        })
-        res.send({ msg: 'Order Saved' })
-    }
-});
+const appName = 'LpgApp';
+const version = '1.0';
 
-
-
-router.get("/getusers", async function (req, res) {
-    let users = await UserModel.find({}).populate("orders");
-    res.send(users);
-});
-
-router.get("/getuserbyId", async function (req, res) {
-    const id = req.query.id;
-    let user = await UserModel.findById({ _id: id }).populate("orders");
-    res.send(user);
-});
-
-router.post("/update-user", async function (req, res) {
-    const name = req.body.name;
-    const address = req.body.address;
-    const mobile = req.body.mobile;
-    const emailID = req.body.email;
-    const aadhar = req.body.aadhar;
-    const isExist = await UserModel.findOne({ emailID: emailID });
-
-    if (isExist) {
-        let userUpdated = await UserModel.updateOne(
-            {
-                mobile: mobile,
-            },
-            {
-                $set: {
-                    name: name,
-                    address: address,
-                    mobile: mobile,
-                    emailID: emailID,
-                    aadhar: aadhar
-                },
+router.post('/user', async (req, res) => {
+    if (req.body.appName == appName && req.body.version == version) {
+        if (req.body.servicename == 'addCustomer') {
+            const id = 'CLP-' + req.body.data[0].mobile;
+            const name = req.body.data[0].name;
+            const address = req.body.data[0].address;
+            const mobile = req.body.data[0].mobile;
+            const emailID = req.body.data[0].email;
+            const aadhar = req.body.data[0].aadhar;
+            const gstNumber = req.body.data[0].gstNumber;
+            const companyName = req.body.data[0].companyName;
+            let isExist = await UserModel.findById(id);
+            if (isExist) {
+                res.send({ success: false, msg: "User already exists" });
+            } else {
+                await UserModel.insertMany({
+                    _id: id,
+                    name,
+                    address,
+                    mobile,
+                    emailID,
+                    aadhar,
+                    gstNumber,
+                    companyName,
+                })
+                res.send({ success: true, msg: 'User created' })
             }
-        );
-        res.send(userUpdated);
+        } else if (req.body.servicename == 'getCustomer') {
+            let users = await UserModel.find({}).populate("orders");
+            res.send({ success: true, customers: users });
+        } else if (req.body.servicename == 'getCustomerById') {
+            const id = req.body.customerId;
+            let user = await UserModel.findById({ _id: id }).populate("orders");
+            res.send(user);
+        } else if (req.body.servicename == 'updateCustomer') {
+            const id = 'CLP-' + req.body.data[0].mobile;
+            const name = req.body.data[0].name;
+            const address = req.body.data[0].address;
+            const mobile = req.body.data[0].mobile;
+            const emailID = req.body.data[0].email;
+            const aadhar = req.body.data[0].aadhar;
+            const gstNumber = req.body.data[0].gstNumber;
+            const companyName = req.body.data[0].companyName;
+            const isExist = await UserModel.findById({_id:id});
+
+            if (isExist) {
+                let userUpdated = await UserModel.updateOne(
+                    {
+                        _id: id,
+                    },
+                    {
+                        $set: {
+                            name: name,
+                            address: address,
+                            mobile: mobile,
+                            emailID: emailID,
+                            aadhar: aadhar,
+                            gstNumber: gstNumber,
+                            companyName: companyName
+                        },
+                    }
+                );
+                res.send({success:true, msg:'user successfully updated'});
+            } else {
+                res.send({ success:false, msg: "User does not exist" });
+            }
+        } else {
+            res.send({ success: false, msg: 'Please! provide a valid servicename' })
+        }
     } else {
-        res.send({ msg: "User does not exist" });
+        res.send({ success: false, msg: 'Invalid AppName or Version' })
     }
-});
+})
 
 module.exports = router;
