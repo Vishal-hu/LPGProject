@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
+    _id:String,
     username:String,
     password:String,
     created_at: {

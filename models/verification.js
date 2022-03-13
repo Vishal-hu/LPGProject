@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const verificationSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    userId: { type: String, ref: 'user' },
     email:String,
     mobile:String,
     random_number:Number,
