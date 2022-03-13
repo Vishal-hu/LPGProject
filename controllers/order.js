@@ -11,7 +11,7 @@ const OrderModel = mongoose.model("order");
 const appName = 'LpgApp';
 const version = '1.0';
 
-router.post('/add', async (req, res) => {
+router.post('/order', async (req, res) => {
     try {
         if (req.body.appName == appName && req.body.version == version) {
             if (req.body.servicename == 'addOrder') {
@@ -40,7 +40,19 @@ router.post('/add', async (req, res) => {
                 } else {
                     res.send({ success: false, msg: 'Customer not found' })
                 }
-            } else {
+            } else if (req.body.servicename == 'getOrders') {
+                const orders = await OrderModel.find({});
+                res.send({ success: true, orders })
+            } else if (req.body.servicename == 'getOrdersById') {
+                const order_id = req.body.data[0].orderId;
+                const orderFound = await OrderModel.findOne({ _id: order_id })
+                if (orderFound) {
+                    res.send({ success: true, order: orderFound })
+                } else {
+                    res.send({ success: false, msg: "Order not found for this id" })
+                }
+            }
+            else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
             }
         } else {

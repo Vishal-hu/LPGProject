@@ -43,4 +43,4 @@ const order = require("./controllers/order");
 app.use("/customer", user);
 app.use("/admin", admin);
 app.use("/otpcalls", otpcalls);
-app.use("/order", order);
+app.use("/ordercalls", order);
