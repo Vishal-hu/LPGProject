@@ -36,7 +36,7 @@ router.post('/user', async (req, res) => {
                 if (isExist) {
                     res.send({ success: false, msg: "User already exists" });
                 } else {
-                    await UserModel.insertMany({
+                    const createdUser = await UserModel.insertMany({
                         _id: id,
                         name,
                         address,
@@ -46,7 +46,7 @@ router.post('/user', async (req, res) => {
                         gstNumber,
                         companyName,
                     })
-                    res.send({ success: true, msg: 'User created' })
+                    res.send({ success: true, msg: 'User created', user:createdUser})
                 }
             } else if (req.body.servicename == 'getCustomer') {
                 let users = await UserModel.find({}).populate("orders");

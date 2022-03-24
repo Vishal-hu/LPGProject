@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     address: {
         houseNo:String,
         block:String,
+        locality:String,
         location:String,
         pincode:Number
     },
