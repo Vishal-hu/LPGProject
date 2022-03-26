@@ -199,7 +199,7 @@ Paytm.generateSignature(JSON.stringify(paytmParams.body), `${config.PaytmConfig.
         // hostname: 'securegw.paytm.in',
 
         port: 443,
-        path: '/theia/api/v1/initiateTransaction?mid=acNWHP42843987049185&orderId=ORDERID_98765',
+        path: `/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
