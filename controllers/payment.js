@@ -63,7 +63,7 @@ router.post("/callback", async (req, res) => {
   } catch (error) {
     res.send(error)
   }
-  
+
 });
 
 //
@@ -73,124 +73,124 @@ const Paytm = require('paytmchecksum');
 * import checksum generation utility
 * You can get this utility from https://developer.paytm.com/docs/checksum/
 */
-router.post('/newPayment',async(req, res)=>{
+router.post('/newPayment', async (req, res) => {
 
 
-// var paytmParams = {};
+  // var paytmParams = {};
 
 
-// paytmParams["MID"] = "acNWHP42843987049185";
-// paytmParams["ORDERID"] = "123ioi12";
+  // paytmParams["MID"] = "acNWHP42843987049185";
+  // paytmParams["ORDERID"] = "123ioi12";
 
 
-// var paytmChecksum = Paytm.generateSignature(paytmParams, "3BvdZorU8#p0_KE&");
-// paytmChecksum.then(function(checksum){
-// 	console.log("generateSignature Returns: " + checksum);
-// }).catch(function(error){
-// 	console.log(error);
-// });
+  // var paytmChecksum = Paytm.generateSignature(paytmParams, "3BvdZorU8#p0_KE&");
+  // paytmChecksum.then(function(checksum){
+  // 	console.log("generateSignature Returns: " + checksum);
+  // }).catch(function(error){
+  // 	console.log(error);
+  // });
 
-//
-const https = require('https');
-/*
-* import checksum generation utility
-* You can get this utility from https://developer.paytm.com/docs/checksum/
-*/
+  //
+  const https = require('https');
+  /*
+  * import checksum generation utility
+  * You can get this utility from https://developer.paytm.com/docs/checksum/
+  */
 
 
-var paytmParams = {};
+  var paytmParams = {};
 
-paytmParams.body = {
-    "mid"             : "acNWHP42843987049185",
-    "merchantOrderId" : "BEKJBJK1231",
-    "amount"          : "1303.00",
-    "posId"           : "S1234_P1235",
-    "userPhoneNo"     : "7777777777"
-};
+  paytmParams.body = {
+    "mid": "acNWHP42843987049185",
+    "merchantOrderId": "BEKJBJK1231",
+    "amount": "1303.00",
+    "posId": "S1234_P1235",
+    "userPhoneNo": "7777777777"
+  };
 
-/*
-* Generate checksum by parameters we have in body
-* Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
-*/
-Paytm.generateSignature(JSON.stringify(paytmParams.body), "3BvdZorU8#p0_KE&").then(function(checksum){
+  /*
+  * Generate checksum by parameters we have in body
+  * Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
+  */
+  Paytm.generateSignature(JSON.stringify(paytmParams.body), "3BvdZorU8#p0_KE&").then(function (checksum) {
 
     paytmParams.head = {
-        "clientId"	: "C11",
-        "version"	: "v1",
-        "signature"	: checksum
+      "clientId": "C11",
+      "version": "v1",
+      "signature": checksum
     };
 
     var post_data = JSON.stringify(paytmParams);
 
     var options = {
 
-        /* for Staging */
-        hostname: 'securegw-stage.paytm.in',
+      /* for Staging */
+      hostname: 'securegw-stage.paytm.in',
 
-        /* for Production */
-        // hostname: 'securegw.paytm.in',
+      /* for Production */
+      // hostname: 'securegw.paytm.in',
 
-        port   : 443,
-        path  : '/order/sendpaymentrequest',
-        method : 'POST',
-        headers: {
-            'Content-Type'  : 'application/json',
-            'Content-Length': post_data.length
-        }
+      port: 443,
+      path: '/order/sendpaymentrequest',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': post_data.length
+      }
     };
 
     var response = "";
-    var post_req = https.request(options, function(post_res) {
-        post_res.on('data', function (chunk) {
-            response += chunk;
-        });
+    var post_req = https.request(options, function (post_res) {
+      post_res.on('data', function (chunk) {
+        response += chunk;
+      });
 
-        post_res.on('end', function(){
-            console.log('Response: ', response);
-        });
+      post_res.on('end', function () {
+        console.log('Response: ', response);
+      });
     });
-    console.log('post_data',post_data);
+    console.log('post_data', post_data);
     post_req.write(post_data);
     post_req.end();
     res.send(post_data)
-});        
+  });
 
 })
- 
+
 //
-router.post('/token',async(req, res)=>{
+router.post('/token', async (req, res) => {
   const https = require('https');
-try {
-  var paytmParams = {};
+  try {
+    var paytmParams = {};
 
-paytmParams.body = {
-    "requestType"   : "Payment",
-    "mid"           : config.PaytmConfig.mid,
-    "websiteName"   : config.PaytmConfig.website,
-    "orderId"       : req.body.orderId,
-    "callbackUrl"   : `https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
-    "txnAmount"     : {
-        "value"     : (req.body.amount).toFixed(2),
-        "currency"  : "INR",
-    },
-    "userInfo"      : {
-        "custId"    : "CUST_001",
-    },
-};
-
-/*
-* Generate checksum by parameters we have in body
-* Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
-*/
-Paytm.generateSignature(JSON.stringify(paytmParams.body), `${config.PaytmConfig.key}`).then(function(checksum){
-
-    paytmParams.head = {
-        "signature"    : checksum
+    paytmParams.body = {
+      "requestType": "Payment",
+      "mid": config.PaytmConfig.mid,
+      "websiteName": config.PaytmConfig.website,
+      "orderId": req.body.orderId,
+      "callbackUrl": `https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
+      "txnAmount": {
+        "value": (req.body.amount).toFixed(2),
+        "currency": "INR",
+      },
+      "userInfo": {
+        "custId": "CUST_001",
+      },
     };
 
-    var post_data = JSON.stringify(paytmParams);
+    /*
+    * Generate checksum by parameters we have in body
+    * Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
+    */
+    Paytm.generateSignature(JSON.stringify(paytmParams.body), `${config.PaytmConfig.key}`).then(function (checksum) {
 
-    var options = {
+      paytmParams.head = {
+        "signature": checksum
+      };
+
+      var post_data = JSON.stringify(paytmParams);
+
+      var options = {
 
         /* for Staging */
         hostname: 'securegw-stage.paytm.in',
@@ -202,30 +202,57 @@ Paytm.generateSignature(JSON.stringify(paytmParams.body), `${config.PaytmConfig.
         path: `/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': post_data.length
+          'Content-Type': 'application/json',
+          'Content-Length': post_data.length
         }
-    };
+      };
 
-    var response = "";
-    var post_req = https.request(options, function(post_res) {
+      var response = "";
+      var post_req = https.request(options, function (post_res) {
         post_res.on('data', function (chunk) {
-            response += chunk;
+          response += chunk;
         });
 
-        post_res.on('end', function(){
-            // console.log('Response: ', response);
-            res.send(response)
+        post_res.on('end', function () {
+          // console.log('Response: ', response);
+          res.send(response)
         });
+      });
+
+      post_req.write(post_data);
+      post_req.end();
+      // res.send(response)
     });
+  } catch (error) {
+    res.send(error)
+  }
 
-    post_req.write(post_data);
-    post_req.end();
-    // res.send(response)
-});
-} catch (error) {
-  res.send(error)
-}
+})
+
+router.post('/postorder', async (req, res) => {
+  try {
+    if (req.body.response) {
+      var bodyData = JSON.parse(req.body.response)
+    } else {
+      var bodyData = req.body
+    }
+
+
+    if (bodyData.STATUS == 'TXN_SUCCESS') {
+      const user = await OrderModel.findOneAndUpdate({ _id: bodyData.ORDERID }, {
+        $set: {
+          isPaymentDone: true
+        }
+      })
+      await UserModel.updateOne({ _id: user.user_id }, { $set: { isSubscribed: true } })
+      res.send({ msg: 'updated', Status: bodyData.STATUS })
+    } else {
+      res.send({ success:false, msg: bodyData.RESPMSG })
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
 
 })
 //
