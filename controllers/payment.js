@@ -160,8 +160,8 @@ Paytm.generateSignature(JSON.stringify(paytmParams.body), "3BvdZorU8#p0_KE&").th
 //
 router.post('/token',async(req, res)=>{
   const https = require('https');
-
-var paytmParams = {};
+try {
+  var paytmParams = {};
 
 paytmParams.body = {
     "requestType"   : "Payment",
@@ -223,6 +223,10 @@ Paytm.generateSignature(JSON.stringify(paytmParams.body), `${config.PaytmConfig.
     post_req.end();
     // res.send(response)
 });
+} catch (error) {
+  res.send(error)
+}
+
 })
 //
 module.exports = router
