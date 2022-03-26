@@ -11,7 +11,7 @@ const appName = 'LpgApp';
 const version = '1.0';
 
 router.post('/order',async (req, res) => {
-    const data = JSON.parse(req.body.body)
+    const data = req.body
     try {
         if (data.appName == appName && data.version == version) {
             if (data.servicename == 'addOrder') {
