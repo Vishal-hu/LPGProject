@@ -46,7 +46,7 @@ router.post('/user', async (req, res) => {
                         gstNumber,
                         companyName,
                     })
-                    res.send({ success: true, msg: 'User created', user:createdUser})
+                    res.send({ success: true, msg: 'User created', user: createdUser })
                 }
             } else if (req.body.servicename == 'getCustomer') {
                 let users = await UserModel.find({}).populate("orders");
@@ -87,7 +87,21 @@ router.post('/user', async (req, res) => {
                 } else {
                     res.send({ success: false, msg: "User does not exist" });
                 }
-            } else {
+            } else if (req.body.servicename == 'deleteCustomerById') {
+                const id = req.body.id;
+                const userFound = await UserModel.findOne({ _id: id })
+                if (userFound) {
+                    await UserModel.deleteOne({ _id: id })
+                    res.send({ success: true, msg: 'User deleted' })
+                } else {
+                    res.send({ success: false, msg: 'user not found with this id' })
+                }
+
+            } else if (req.body.servicename == 'deleteAllCustomers') {
+                await UserModel.deleteMany({})
+                res.send({ success: true, msg: 'All users deleted' })
+            }
+            else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
             }
         } else {
