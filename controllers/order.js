@@ -19,6 +19,7 @@ router.post('/order',async (req, res) => {
                 const productList = data.data[0].productId;
                 const cartProducts = data.data[0].cartProducts;
                 const cart_price = data.data[0].cart_price;
+                const quantity = data.data[0].quantity;
                 const totalPrice = data.data[0].totalPrice;
                 for (var i = 0; i < (productList || []).length; i++) {
                     var productFound = await ProductModel.findOne({ _id: productList[i] });
@@ -32,6 +33,7 @@ router.post('/order',async (req, res) => {
                             product_id: productList,
                             cartProducts,
                             cart_price,
+                            quantity,
                             totalPrice
                         })
                         await UserModel.updateOne({ _id: customer_id }, { $push: { orders: orderCreated[0]._id } })
