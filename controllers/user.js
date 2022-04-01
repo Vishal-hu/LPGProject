@@ -92,14 +92,16 @@ router.post('/user', async (req, res) => {
                 const userFound = await UserModel.findOne({ _id: id })
                 if (userFound) {
                     await UserModel.deleteOne({ _id: id })
-                    res.send({ success: true, msg: 'User deleted' })
+                    await OrderModel.deleteMany({ user_id: id})
+                    res.send({ success: true, msg: 'User and his/her order deleted' })
                 } else {
                     res.send({ success: false, msg: 'user not found with this id' })
                 }
 
             } else if (req.body.servicename == 'deleteAllCustomers') {
                 await UserModel.deleteMany({})
-                res.send({ success: true, msg: 'All users deleted' })
+                await OrderModel.deleteMany({})
+                res.send({ success: true, msg: 'All users and their related orders deleted' })
             }
             else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
