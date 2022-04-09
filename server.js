@@ -50,8 +50,10 @@ const admin = require("./controllers/admin");
 const otpcalls = require("./controllers/otpcalls");
 const order = require("./controllers/order");
 const payment = require("./controllers/payment");
+const payupayment = require('./controllers/payumoney');
 app.use("/customer", user);
 app.use("/admin", admin);
 app.use("/otpcalls", otpcalls);
 app.use("/ordercalls", order);
-app.use("/payment", payment)
+app.use("/payment", payment);
+app.use("/payu", payupayment);
