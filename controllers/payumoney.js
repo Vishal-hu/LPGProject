@@ -34,23 +34,42 @@ router.post('/payUHash', async (req, res) => {
 
 })
 
-// router.post('/payUStatusHash', async (req, res) => {
-//     var pd = req.body;
-//     //Generate new Hash 
-//     var hashString = config.payumoney.salt + '|' + pd.status + '||||||||||' + '|' + pd.email + '|' + pd.firstname + '|' + pd.productinfo + '|' + pd.amount + '|' + pd.txnid + '|' + config.payumoney.key
-//     var sha = new jsSHA('SHA-512', "TEXT");
-//     sha.update(hashString)
-//     var hash = sha.getHash("HEX");
-//     // Verify the new hash with the hash value in response
-//     if (hash == pd.hash) {
-//         res.send({ 'status': pd.status });
-//     } else {
-//         res.send({ 'status': "Error occured" });
-//     }
-// })
 
 router.post('/postPayu',async(req, res)=>{
-
+    const status = req.body.status;
+    try {
+    
+        if (status == 'success') {
+          const user = await OrderModel.findOneAndUpdate({ _id: req.body.txnid }, {
+            $set: {
+              isPaymentDone: true
+            }
+          })
+          const userFound = await UserModel.findOneAndUpdate({ _id: user.user_id }, { $set: { isSubscribed: true } })
+        //   const filePath = path.join(__dirname,'../order.html')
+        //   fs.readFile(filePath)
+        //   async function read(err, bucontent){
+        //     var content = bucontent.toString();
+        //     content = content.replace("$$customerName$$", userFound.name);
+        //     pdf.create(content).toBuffer(async function(err, buffer){
+        //       if(err) return console.log(err);
+        //       var attachments = [
+        //         {
+        //           fileName :data +".pdf",
+        //           content:buffer,
+        //           contentType:"application/pdf"
+        //         }
+        //       ]
+        //     })
+        //   }
+          res.send({ msg: 'successful', Status: req.body.status })
+        } else {
+          res.send({ success:false, msg: "Unsuccessful" })
+        }
+    
+      } catch (error) {
+        res.send(error);
+      }
 })
 
 module.exports = router
