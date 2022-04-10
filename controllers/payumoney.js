@@ -12,14 +12,14 @@ const OrderModel = mongoose.model("order");
 var jsSHA = require("jssha");
 router.post('/payUHash', async (req, res) => {
     try {
-        if (!req.body.txnid || !req.body.amount || !req.body.productinfo
+        if (!req.body.txnid || !req.body.amount || !req.body.productName
             || !req.body.firstname || !req.body.email) {
             res.send("Mandatory fields missing");
         } else {
             var pd = req.body;
             var hashString = process.env.PAYUMERCHANT // Merchant Key 
                 + '|' + pd.txnid
-                + '|' + pd.amount + '|' + pd.productinfo + '|'
+                + '|' + pd.amount + '|' + pd.productName + '|'
                 + pd.firstname + '|' + pd.email + '|'
                 + '||||||||||'
                 + process.env.PAYUSALT // Your salt value
