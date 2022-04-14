@@ -228,7 +228,9 @@ router.post('/token', async (req, res) => {
   }
 
 })
-
+const fs = require('fs');
+const path = require('path');
+const pdf = require('html-pdf');
 router.post('/postorder', async (req, res) => {
   try {
     if (req.body.response) {
@@ -244,7 +246,23 @@ router.post('/postorder', async (req, res) => {
           isPaymentDone: true
         }
       })
-      await UserModel.updateOne({ _id: user.user_id }, { $set: { isSubscribed: true } })
+      const userFound = await UserModel.findOneAndUpdate({ _id: user.user_id }, { $set: { isSubscribed: true } })
+      const filePath = path.join(__dirname,'../order.html')
+      fs.readFile(filePath)
+      async function read(err, bucontent){
+        var content = bucontent.toString();
+        content = content.replace("$$customerName$$", userFound.name);
+        pdf.create(content).toBuffer(async function(err, buffer){
+          if(err) return console.log(err);
+          var attachments = [
+            {
+              fileName :data +".pdf",
+              content:buffer,
+              contentType:"application/pdf"
+            }
+          ]
+        })
+      }
       res.send({ msg: 'updated', Status: bodyData.STATUS })
     } else {
       res.send({ success:false, msg: bodyData.RESPMSG })
