@@ -5,7 +5,7 @@ const app = express();
 var mongoose = require("mongoose");
 const path = require('path')
 var cors = require("cors");
-app.use(cors());
+app.use(cors({ origin: '*' }));
 const port = process.env.PORT || 3000;
 // Parses the text as url encoded data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,8 +37,8 @@ app.get('/index', async (req, res) => {
     res.send('Hello')
 })
 app.get('/pay', function (req, res) {
-    res.sendFile(path.join(__dirname+'/views/index.html'));
-    });
+    res.sendFile(path.join(__dirname + '/views/index.html'));
+});
 
 app.listen(port, function () {
     console.log("Server is listening at port:" + port);
