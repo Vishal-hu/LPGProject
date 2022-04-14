@@ -16,7 +16,7 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'html');
 const db = process.env.DBURL;
-// Parses the text as json
+// Parses the text as json 
 app.use(bodyParser.json());
 app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
