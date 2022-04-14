@@ -15,7 +15,7 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // app.use(express.static(path.join(__dirname, 'public')));
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'html');
-const db = process.env.DBURL;
+const db = process.env.DB;
 // Parses the text as json
 app.use(bodyParser.json());
 app.all('/*', function(req, res, next) {

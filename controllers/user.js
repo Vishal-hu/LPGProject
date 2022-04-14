@@ -15,7 +15,7 @@ router.post('/create-admin', async (req, res) => {
         username,
         password
     })
-    res.send({ success: true, msg: 'user created' })
+    res.send({ success: true, msg: 'admin created' })
 })
 const appName = 'LpgApp';
 const version = '1.0';
