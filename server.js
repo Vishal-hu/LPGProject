@@ -18,7 +18,11 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 const db = process.env.DBURL;
 // Parses the text as json
 app.use(bodyParser.json());
-
+app.all('/*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+  });
 mongoose.connect(
     db,
     {
