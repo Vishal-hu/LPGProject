@@ -6,6 +6,7 @@ require("../models/verification");
 const UserModel = mongoose.model("user")
 const VerificationModel = mongoose.model("verification");
 const mailUtilCtrl = require("../utils/mailutil");
+var moment = require('moment');
 const appName = 'LpgApp';
 const version = '1.0';
 router.post('/otp', async (req, res) => {
@@ -41,7 +42,15 @@ router.post('/otp', async (req, res) => {
                     ],
                 })
                 if (otpFound) {
-                    res.send({ success: true, msg: "OTP matched", userData: userFound })
+                    let currentTime = moment(new Date());
+                    let documentTime = otpFound.created_at;
+                    let duration = moment.duration(currentTime.diff(documentTime));
+                    var minutes = duration.asMinutes();
+                    if (minutes > 10) {
+                        res.send({ success: false, msg: 'OTP expired' })
+                    } else {
+                        res.send({ success: true, msg: "OTP matched", userData: userFound })
+                    }
                 } else {
                     res.send({ success: false, msg: "OTP not matched" })
                 }
