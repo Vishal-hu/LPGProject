@@ -32,6 +32,7 @@ router.post('/otp', async (req, res) => {
                 const mobile = req.body.data[0].mobile;
                 const otp = req.body.data[0].mobileOTP;
                 const email = req.body.data[0].email;
+                const userFound = await UserModel.findOne({ $or: [{ mobile: mobile }, { emailID: email }] })
                 const otpFound = await VerificationModel.findOne({
                     $and: [
                         { mobile: mobile },
@@ -40,7 +41,7 @@ router.post('/otp', async (req, res) => {
                     ],
                 })
                 if (otpFound) {
-                    res.send({ success: true, msg: "OTP matched" })
+                    res.send({ success: true, msg: "OTP matched", userData: userFound })
                 } else {
                     res.send({ success: false, msg: "OTP not matched" })
                 }
