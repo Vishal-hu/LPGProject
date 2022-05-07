@@ -16,13 +16,20 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'html');
 const db = process.env.DBURL;
+
+// prevent crashes
+process.on('unhandledRejection', (reason, p) => {
+})
+process.on('uncaughtException', err => {
+});
 // Parses the text as json 
+
 app.use(bodyParser.json());
-app.all('/*', function(req, res, next) {
+app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
-  });
+});
 mongoose.connect(
     db,
     {
