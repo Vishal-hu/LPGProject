@@ -8,31 +8,32 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-const mailSend = async (toMailAddress, otp) => {
-
-    let mailOptions = {
-        from: process.env.MAILUSER,
-        to: toMailAddress,
-        subject: `OTP from PremiumLPG`,
-        html: `Please use otp ${otp} for login process`,
-        // attachments: [
-        //   {
-        //     filename: `${name}.pdf`,
-        //     path: path.join(__dirname, `../../src/assets/books/${name}.pdf`),
-        //     contentType: 'application/pdf',
-        //   },
-        // ],
-    };
+const mailSend = async (toMailAddress, otp, attachments) => {
+    let mailOptions = {};
+    if (attachments) {
+        mailOptions = {
+            from: process.env.MAILUSER,
+            to: toMailAddress,
+            subject: `OTP from PremiumLPG`,
+            html: `Order details from premium LPG`,
+            attachments: [
+                {
+                    filename: `${name}.pdf`,
+                    path: path.join(__dirname, `../../src/assets/books/${name}.pdf`),
+                    contentType: 'application/pdf',
+                },
+            ],
+        };
+    } else {
+        mailOptions = {
+            from: process.env.MAILUSER,
+            to: toMailAddress,
+            subject: `OTP from PremiumLPG`,
+            html: `Please use otp ${otp} for login process`,
+        };
+    }
 
     return transporter.sendMail(mailOptions)
-        // , function (err, info) {
-        // if (err) {
-        //     console.log(err);;
-        // }
-        // else {
-        //     return info
-        // }
-    // });
 
 }
 module.exports = {

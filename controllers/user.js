@@ -60,7 +60,6 @@ router.post('/user', async (req, res) => {
                 const name = req.body.data[0].name;
                 const address = req.body.data[0].address;
                 const mobile = req.body.data[0].mobile;
-                const emailID = req.body.data[0].email;
                 const aadhar = req.body.data[0].aadhar;
                 const gstNumber = req.body.data[0].gstNumber;
                 const companyName = req.body.data[0].companyName;
@@ -76,7 +75,6 @@ router.post('/user', async (req, res) => {
                                 name: name,
                                 address: address,
                                 mobile: mobile,
-                                emailID: emailID,
                                 aadhar: aadhar,
                                 gstNumber: gstNumber,
                                 companyName: companyName
@@ -92,7 +90,7 @@ router.post('/user', async (req, res) => {
                 const userFound = await UserModel.findOne({ _id: id })
                 if (userFound) {
                     await UserModel.deleteOne({ _id: id })
-                    await OrderModel.deleteMany({ user_id: id})
+                    await OrderModel.deleteMany({ user_id: id })
                     res.send({ success: true, msg: 'User and his/her order deleted' })
                 } else {
                     res.send({ success: false, msg: 'user not found with this id' })

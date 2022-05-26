@@ -24,7 +24,7 @@ router.post('/otp', async (req, res) => {
                         email: userFound.emailID,
                         random_number: random_number
                     })
-                    const mailMessage = await mailUtilCtrl.mailSend(userFound.emailID, random_number)
+                    const mailMessage = await mailUtilCtrl.mailSend(userFound.emailID, random_number, false)
                     res.send({ success: true, msg: "OTP sent on user mail address" })
                 } else {
                     res.send({ success: false, msg: 'User not found with this mobile number. Please! Register first with this number' })
@@ -51,10 +51,53 @@ router.post('/otp', async (req, res) => {
                     } else {
                         res.send({ success: true, msg: "OTP matched", userData: userFound })
                     }
-                } else {
+                } else if (req.body.servicename == 'updateCustomer') {
+
+                }
+                else {
                     res.send({ success: false, msg: "OTP not matched" })
                 }
-            } else {
+            } else if (req.body.servicename == 'customerUpdateOTP') {
+                const { oldMobile, oldEmail, newMobile, newMail } = req.body.data[0];
+                const random_number = Math.floor(100000 + Math.random() * 900000);
+                const userFound = await UserModel.findOne({ $or: [{ mobile: oldMobile }, { emailID: oldEmail }] })
+                if (userFound) {
+                    if (newMobile) {
+                        userFound._id = 'CLP-' + newMobile;
+                        await UserModel.insertMany(userFound);
+                        await UserModel.deleteOne({ _id: 'CLP-' + oldMobile })
+                        await UserModel.updateOne({ _id: `CLP-${newMobile}` }, {
+                            $set: {
+                                emailID: newMail
+                            }
+                        })
+                        await VerificationModel.insertMany({
+                            userId: `CLP-${newMobile}`,
+                            mobile: newMobile,
+                            email: newMail,
+                            random_number: random_number
+                        })
+                        const mailMessage = await mailUtilCtrl.mailSend(newMail, random_number, false)
+                    } else {
+                        await UserModel.updateOne({ _id: `CLP-${oldMobile}` }, {
+                            $set: {
+                                emailID: newMail
+                            }
+                        })
+                        await VerificationModel.insertMany({
+                            userId: `CLP-${oldMobile}`,
+                            mobile: oldMobile,
+                            email: newMail,
+                            random_number: random_number
+                        })
+                        const mailMessage = await mailUtilCtrl.mailSend(newMail, random_number, false)
+                    }
+                    res.send({ success: true, msg: "OTP sent on user mail address" })
+                } else {
+                    res.send({ success: false, msg: 'User not found with this mobile number. Please! Register first with this number' })
+                }
+            }
+            else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
             }
         } else {

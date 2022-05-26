@@ -11,42 +11,156 @@
             border: none;
         }
 
+        body {
+            font-weight: unset;
+            margin: 0px auto;
+            padding: 0px auto;
+            box-sizing: border-box;
+        }
+
         .center {
             margin-left: auto;
             margin-right: auto;
         }
-        h3{
+
+        h3 {
             color: cornflowerblue;
+            margin: 0%;
+            font-weight: unset;
+        }
+
+        h4 {
+            color: black;
+            margin: 0%;
+            font-weight: 100;
+            font-weight: unset;
+        }
+
+        h2 {
+            color: black;
+            margin: 0%;
+            font-weight: 100;
+            font-weight: unset;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust:unset
+            }
         }
     </style>
 </head>
 
 <body>
-    <table class="center">
-        <tr>
-            <td><h3>Customer Name: <h2>$$customerName$$</h2></h3></td>
-            <td><h3>Customer Address <div>$$customerAddress$$</h3></div>
-            </td>
-        </tr>
-        <tr>
-            <td>Phone No. $$phoneNo$$</td>
-        </tr>
-        <tr>
-            <td>Product Name</td>
-            <td>Product Price</td>
-        </tr>
- 
-        <tr>
-            <td>$$productName$$</td>
-            <td>$$productPrice$$</td>
-        </tr>
-        <tr>
-            <td>
-                Total Amount
-            </td>
-            <td>$$totalAmount$$</td>
-        </tr>
-    </table>
+    <div class="heading" style="width:100%;height:70px;background-color: rgb(168, 153, 153) !important;">
+        <div style="float: left; height: 50px ;width: 33%;margin-top:10px;margin-left:10px;">
+            <span>
+                <?xml version="1.0" standalone="no"?>
+                <!DOCTYPE svg
+                    PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+                <?xml version="1.0" encoding="UTF-8"?>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px"
+                    height="52px" viewBox="0 0 18 31" version="1.1">
+                    <g id="surface1">
+                        <path
+                            style=" stroke:none;fill-rule:evenodd;fill:rgb(81.960784%,21.568627%,17.647059%);fill-opacity:1;"
+                            d="M 5.03125 6.363281 L 7.203125 6.363281 L 7.203125 2.148438 L 4.207031 2.148438 L 4.207031 6.429688 C 4.472656 6.386719 4.75 6.363281 5.03125 6.363281 Z M 10.769531 6.363281 L 12.96875 6.363281 C 13.238281 6.363281 13.503906 6.382812 13.765625 6.425781 L 13.765625 2.148438 L 10.769531 2.148438 Z M 14.632812 6.640625 C 16.589844 7.320312 18 9.152344 18 11.292969 L 18 12.015625 L 0 12.015625 L 0 11.292969 C 0 9.164062 1.398438 7.339844 3.339844 6.652344 L 3.339844 2.148438 L 3.261719 2.148438 C 2.679688 2.148438 2.199219 1.675781 2.199219 1.105469 C 2.199219 0.53125 2.675781 0.0625 3.261719 0.0625 L 14.710938 0.0625 C 15.296875 0.0625 15.773438 0.53125 15.773438 1.105469 C 15.773438 1.675781 15.296875 2.148438 14.710938 2.148438 L 14.636719 2.148438 L 14.636719 6.640625 Z M 18 13.15625 L 18 21.550781 L 0 21.550781 L 0 13.15625 Z M 18 22.691406 L 18 25.367188 C 18 26.625 17.292969 27.726562 16.246094 28.304688 L 16.246094 30.027344 C 16.246094 30.527344 15.828125 30.9375 15.316406 30.9375 L 2.679688 30.9375 C 2.167969 30.9375 1.75 30.527344 1.75 30.027344 L 1.75 28.304688 C 0.707031 27.726562 0 26.625 0 25.367188 L 0 22.691406 Z M 18 22.691406 " />
+                    </g>
+                </svg>
+
+
+                <g transform="matrix(0.06510417 0 0 0.06510417 2.7145183 -0)">
+                    <g>
+                        <path
+                            d="M19.62 25.08L28.1 25.08L28.1 8.3L16.41 8.3L16.41 25.34C 17.45 25.17 18.53 25.08 19.62 25.08zM42 25.08L50.59 25.08C 51.64 25.08 52.68 25.16 53.69 25.33L53.69 25.33L53.69 8.3L42 8.3L42 25.08zM57.08 26.19C 64.71 28.880001 70.21 36.18 70.21 44.7L70.21 44.7L70.21 47.58L0 47.58L0 44.7C 0 36.22 5.45 28.960001 13.02 26.230001L13.02 26.230001L13.02 8.3L12.7300005 8.3C 10.450001 8.3 8.58 6.4300003 8.58 4.15C 8.58 1.87 10.44 0 12.73 0L12.73 0L57.38 0C 59.66 0 61.530003 1.87 61.530003 4.15C 61.530003 6.4300003 59.660004 8.3 57.38 8.3L57.38 8.3L57.09 8.3L57.09 26.19L57.08 26.19zM70.21 52.12L70.21 85.520004L0 85.520004L0 52.120003L70.21 52.120003L70.21 52.12zM70.21 90.06L70.21 100.71C 70.21 105.71 67.45 110.09 63.37 112.4L63.37 112.4L63.37 119.26C 63.37 121.25 61.739998 122.880005 59.75 122.880005L59.75 122.880005L10.45 122.880005C 8.46 122.880005 6.83 121.25001 6.83 119.26L6.83 119.26L6.83 112.4C 2.76 110.09 0 105.71 0 100.71L0 100.71L0 90.06L70.21 90.06z"
+                            stroke="none" fill="#D1372D" fill-rule="nonzero" />
+                    </g>
+                </g>
+                </svg>
+            </span>
+
+        </div>
+        <div style="width: 33%;height: 50px;margin-top:10px;float: left;text-align: center;line-height: 50px;">
+            <h2>Premium LPG</h2>
+        </div>
+
+    </div>
+    <div style="border: 1px solid black;width: 50%; margin: 0px auto;margin-top: 10px;">
+
+        <h3 style="color: black;font-size: 33px;
+    font-weight: unset !important; text-align: center;">Order Details</h3>
+        <hr>
+        <table class="center">
+            <tr>
+                <td>
+                    <h4>Customer Name:
+                    </h4>
+
+                </td>
+                <td>
+                    <h3>$$customerName$$</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Customer Address: </h4>
+
+                </td>
+                <td>
+                    <h3>$$customerAddress$$</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Phone No.:</h4>
+                </td>
+                <td>
+                    <h3>$$phoneNo$$</h3>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table class="center">
+            <tr>
+                <td style="width: 120px;">
+                    <h4>Product Name</h4>
+                </td>
+                <td style="width: 120px;text-align: center;">
+                    <h4>Quantity</h4>
+                </td>
+                <td style="width: 120px;text-align: end;">
+                    <h4>Product Price</h4>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table class="center">
+            <tr>
+                <td style="width: 120px;">
+                    <h3>$productName</h3>
+                </td>
+                <td style="width: 120px;text-align: center;">
+                    <h3>$quantity</h3>
+                </td>
+                <td style="width: 120px;text-align: end;">
+                    <h3>$productPrice</h3>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table class="center">
+            <tr>
+                <td>
+                    <h4 style="width: 300px;text-align: left;">Total:</h4>
+                </td>
+                <td>
+                    <h4>$total</h4>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </body>
 
 </html>
