@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    _id:String,
+    _id: Number,
     name: String,
     address: {
-        houseNo:String,
-        block:String,
-        locality:String,
-        location:String,
-        pincode:Number
+        houseNo: String,
+        block: String,
+        locality: String,
+        location: String,
+        pincode: Number
     },
     mobile: String,
     emailID: String,
-    orders: [{type:mongoose.Types.ObjectId,ref: 'order'}],
+    orders: [{ type: mongoose.Types.ObjectId, ref: 'order' }],
     aadhar: String,
-    gstNumber:String,
-    companyName:String,
+    gstNumber: String,
+    companyName: String,
     created_at: {
         type: Date,
         default: Date.now
@@ -25,5 +25,4 @@ const UserSchema = new mongoose.Schema({
         default: false
     },
 });
-
 mongoose.model('user', UserSchema);

@@ -23,8 +23,10 @@ const version = '1.0';
 router.post('/user', async (req, res) => {
     try {
         if (req.body.appName == appName && req.body.version == version) {
+
             if (req.body.servicename == 'addCustomer') {
-                const id = 'CLP-' + req.body.data[0].mobile;
+                let currentTimeStamp = new Date().getTime();
+                const id = currentTimeStamp;
                 const name = req.body.data[0].name;
                 const address = req.body.data[0].address;
                 const mobile = req.body.data[0].mobile;
@@ -56,25 +58,27 @@ router.post('/user', async (req, res) => {
                 let user = await UserModel.findById({ _id: id }).populate("orders");
                 res.send(user);
             } else if (req.body.servicename == 'updateCustomer') {
-                const id = 'CLP-' + req.body.data[0].mobile;
                 const name = req.body.data[0].name;
+                const oldEmailID = req.body.data[0].oldEmail;
+                const newEmailID = req.body.data[0].newEmail;
                 const address = req.body.data[0].address;
-                const mobile = req.body.data[0].mobile;
+                const newMobile = req.body.data[0].newMobile;
                 const aadhar = req.body.data[0].aadhar;
                 const gstNumber = req.body.data[0].gstNumber;
                 const companyName = req.body.data[0].companyName;
-                const isExist = await UserModel.findById({ _id: id });
+                const isExist = await UserModel.findOne({ emailID : oldEmailID });
 
                 if (isExist) {
                     let userUpdated = await UserModel.updateOne(
                         {
-                            _id: id,
+                            emailID : oldEmailID,
                         },
                         {
                             $set: {
+                                emailID: newEmailID,
                                 name: name,
                                 address: address,
-                                mobile: mobile,
+                                mobile: newMobile,
                                 aadhar: aadhar,
                                 gstNumber: gstNumber,
                                 companyName: companyName
