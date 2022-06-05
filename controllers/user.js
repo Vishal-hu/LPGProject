@@ -62,108 +62,117 @@ router.post('/user', async (req, res) => {
                 let user = await UserModel.findById({ _id: id }).populate("orders");
                 res.send(user);
             } else if (req.body.servicename == 'updateCustomer') {
+                const id = req.body.data[0].id;
                 const name = req.body.data[0].name;
-                const previousEmail = req.body.data[0].previousEmail;
-                const currentEmail = req.body.data[0].currentEmail;
                 const address = req.body.data[0].address;
-                const isMobileUpdate = req.body.data[0].isMobileUpdate;
-                const isEmailUpdate = req.body.data[0].isEmailUpdate;
-                const currentMobile = req.body.data[0].currentMobile;
-                const previousMobile = req.body.data[0].previousMobile;
+                const mobile = req.body.data[0].mobile;
+                const emailID = req.body.data[0].email;
                 const aadhar = req.body.data[0].aadhar;
                 const gstNumber = req.body.data[0].gstNumber;
                 const companyName = req.body.data[0].companyName;
 
                 const random_number = Math.floor(100000 + Math.random() * 900000);
-                const userFound = await UserModel.findOne({ $or: [{ mobile: previousMobile }, { emailID: previousEmail }] })
+                const userFound = await UserModel.findOne({ _id: id })
                 if (userFound) {
                     await VerificationModel.insertMany({
-                        userId: userFound._id,
-                        mobile: userFound.mobile,
-                        email: userFound.emailID,
+                        userId: id,
+                        mobile: mobile,
+                        email: emailID,
                         random_number: random_number
                     })
-                    const mailMessage = await mailUtilCtrl.mailSend(userFound.emailID, random_number, false)
-                    res.send({ success: true, msg: "OTP sent on user mail address" })
+                    const updatedCustomer = await UserModel.updateOne({ _id: id }, {
+                        $set: {
+                            name,
+                            address,
+                            mobile,
+                            emailID,
+                            aadhar,
+                            gstNumber,
+                            companyName
+                        }
+                    })
+                    const mailMessage = await mailUtilCtrl.mailSend(emailID, random_number, false)
+                    res.send({ success: true, msg: "customer updated, OTP sent on user's new mail address" })
                 } else {
                     res.send({ success: false, msg: 'User not found with this mobile number. Please! Register first with this number' })
                 }
-            } else if (req.body.servicename == 'verifiedCustomerUpdate') {
-                const {
-                    otp,
-                    name,
-                    previousEmail,
-                    currentEmail,
-                    address,
-                    isMobileUpdate,
-                    isEmailUpdate,
-                    currentMobile,
-                    previousMobile,
-                    aadhar,
-                    gstNumber,
-                    companyName
-                } = req.body.data[0];
-
-                const userFound = await UserModel.findOne({ $or: [{ mobile: previousMobile }, { emailID: previousEmail }] })
-                if (userFound) {
-                    const otpFound = await VerificationModel.findOne({
-                        $and: [
-                            { mobile: previousMobile },
-                            { random_number: otp },
-                            { email: previousEmail }
-                        ],
-                    })
-                    if (otpFound) {
-                        let currentTime = moment(new Date());
-                        let documentTime = otpFound.created_at;
-                        let duration = moment.duration(currentTime.diff(documentTime));
-                        var minutes = duration.asMinutes();
-                        if (minutes > 10) {
-                            res.send({ success: false, msg: 'OTP expired' })
-                        } else {
-                            if (isMobileUpdate) {
-                                let userUpdated = await UserModel.updateOne(
-                                    {
-                                        emailID: previousEmail,
-                                    },
-                                    {
-                                        $set: {
-                                            name: name,
-                                            address: address,
-                                            mobile: currentMobile,
-                                            aadhar: aadhar,
-                                            gstNumber: gstNumber,
-                                            companyName: companyName
-                                        },
-                                    }
-                                );
-                                res.send({ success: true, updatedUser: userUpdated })
-                            } else if (isEmailUpdate) {
-                                let userUpdated = await UserModel.updateOne(
-                                    {
-                                        mobile: previousMobile,
-                                    },
-                                    {
-                                        $set: {
-                                            emailID: currentEmail,
-                                            name: name,
-                                            address: address,
-                                            aadhar: aadhar,
-                                            gstNumber: gstNumber,
-                                            companyName: companyName
-                                        },
-                                    }
-                                );
-                                res.send({ success: true, updatedUser: userUpdated })
-                            }
-                        }
-                    } else {
-                        res.send({ success: false, msg: 'otp not matched' })
-                    }
-                } else {
-                    res.send({ success: false, msg: 'user not found' })
-                }
             }
+            // else if (req.body.servicename == 'verifiedCustomerUpdate') {
+            //     const {
+            //         otp,
+            //         name,
+            //         previousEmail,
+            //         currentEmail,
+            //         address,
+            //         isMobileUpdate,
+            //         isEmailUpdate,
+            //         currentMobile,
+            //         previousMobile,
+            //         aadhar,
+            //         gstNumber,
+            //         companyName
+            //     } = req.body.data[0];
+
+            //     const userFound = await UserModel.findOne({ $or: [{ mobile: previousMobile }, { emailID: previousEmail }] })
+            //     if (userFound) {
+            //         const otpFound = await VerificationModel.findOne({
+            //             $and: [
+            //                 { mobile: previousMobile },
+            //                 { random_number: otp },
+            //                 { email: previousEmail }
+            //             ],
+            //         })
+            //         if (otpFound) {
+            //             let currentTime = moment(new Date());
+            //             let documentTime = otpFound.created_at;
+            //             let duration = moment.duration(currentTime.diff(documentTime));
+            //             var minutes = duration.asMinutes();
+            //             if (minutes > 10) {
+            //                 res.send({ success: false, msg: 'OTP expired' })
+            //             } else {
+            //                 if (isMobileUpdate) {
+            //                     let userUpdated = await UserModel.updateOne(
+            //                         {
+            //                             emailID: previousEmail,
+            //                         },
+            //                         {
+            //                             $set: {
+            //                                 name: name,
+            //                                 address: address,
+            //                                 mobile: currentMobile,
+            //                                 aadhar: aadhar,
+            //                                 gstNumber: gstNumber,
+            //                                 companyName: companyName
+            //                             },
+            //                         }
+            //                     );
+            //                     res.send({ success: true, updatedUser: userUpdated })
+            //                 } else if (isEmailUpdate) {
+            //                     let userUpdated = await UserModel.updateOne(
+            //                         {
+            //                             mobile: previousMobile,
+            //                         },
+            //                         {
+            //                             $set: {
+            //                                 emailID: currentEmail,
+            //                                 name: name,
+            //                                 address: address,
+            //                                 aadhar: aadhar,
+            //                                 gstNumber: gstNumber,
+            //                                 companyName: companyName
+            //                             },
+            //                         }
+            //                     );
+            //                     res.send({ success: true, updatedUser: userUpdated })
+            //                 }
+            //             }
+            //         } else {
+            //             res.send({ success: false, msg: 'otp not matched' })
+            //         }
+            //     } else {
+            //         res.send({ success: false, msg: 'user not found' })
+            //     }
+            // }
             else if (req.body.servicename == 'deleteCustomerById') {
                 const id = req.body.id;
                 const userFound = await UserModel.findOne({ _id: id })
