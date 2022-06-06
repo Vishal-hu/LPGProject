@@ -168,7 +168,7 @@ router.post('/token', async (req, res) => {
       "mid": config.PaytmConfig.mid,
       "websiteName": config.PaytmConfig.website,
       "orderId": req.body.orderId,
-      "callbackUrl": `https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
+      "callbackUrl": `https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=${req.body.orderId}`,//`https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=${config.PaytmConfig.mid}&orderId=${req.body.orderId}`,
       "txnAmount": {
         "value": (req.body.amount).toFixed(2),
         "currency": "INR",
