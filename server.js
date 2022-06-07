@@ -47,6 +47,11 @@ mongoose.connect(
 app.get('/index', async (req, res) => {
     res.send('Hello')
 })
+
+app.get('/latest-version', async (req, res) => {
+    res.send({ success: true, latestVersion: '1.0' })
+})
+
 app.get('/pay', function (req, res) {
     res.sendFile(path.join(__dirname + '/views/index.html'));
 });
