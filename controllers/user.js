@@ -59,13 +59,15 @@ router.post('/user', async (req, res) => {
                 res.send({ success: true, customers: users });
             } else if (req.body.servicename == 'getCustomerById') {
                 const id = req.body.customerId;
-                let user = await UserModel.findById({ _id: id }).populate("orders");
+                let user = await UserModel.findById({ _id: id }).populate("orders");;
+                user = user.toJSON();
+                user.orders.reverse()
                 res.send(user);
             } else if (req.body.servicename == 'updateCustomer') {
                 const id = req.body.data[0].id;
                 const name = req.body.data[0].name;
                 const address = req.body.data[0].address;
-                const mobile = req.body.data[0].mobile;
+                const mobile = req.body.data[0].mobile; 9
                 const emailID = req.body.data[0].email;
                 const aadhar = req.body.data[0].aadhar;
                 const gstNumber = req.body.data[0].gstNumber;
