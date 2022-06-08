@@ -15,7 +15,13 @@ const OrderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-
+    orderAddress: {
+        houseNo: String,
+        block: String,
+        locality: String,
+        location: String,
+        pincode: Number
+    }
 });
 
 mongoose.model('order', OrderSchema);

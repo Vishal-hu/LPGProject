@@ -49,7 +49,7 @@ app.get('/index', async (req, res) => {
 })
 
 app.get('/latest-version', async (req, res) => {
-    res.send({ success: true, latestVersion: '1.0' })
+    res.send({ success: true, latestVersion: '1.0', url: "https://www.google.com" })
 })
 
 app.get('/pay', function (req, res) {
