@@ -13,9 +13,9 @@ const UserSchema = new mongoose.Schema({
     mobile: String,
     emailID: String,
     orders: [{ type: mongoose.Types.ObjectId, ref: 'order' }],
-    aadhar: String,
-    gstNumber: String,
-    companyName: String,
+    aadhar: { type: String, default: 'NA' },
+    gstNumber: { type: String, default: 'NA' },
+    companyName: { type: String, default: 'NA' },
     created_at: {
         type: Date,
         default: Date.now
