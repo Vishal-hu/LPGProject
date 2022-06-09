@@ -41,59 +41,21 @@ router.post('/otp', async (req, res) => {
                         { email: email }
                     ],
                 })
-                if (otpFound) {
-                    let currentTime = moment(new Date());
-                    let documentTime = otpFound.created_at;
-                    let duration = moment.duration(currentTime.diff(documentTime));
-                    var minutes = duration.asMinutes();
-                    if (minutes > 10) {
-                        res.send({ success: false, msg: 'OTP expired' })
-                    } else {
+                // if (otpFound) {
+                //     let currentTime = moment(new Date());
+                //     let documentTime = otpFound.created_at;
+                //     let duration = moment.duration(currentTime.diff(documentTime));
+                //     var minutes = duration.asMinutes();
+                //     if (minutes > 10) {
+                //         res.send({ success: false, msg: 'OTP expired' })
+                //     } else {
                         res.send({ success: true, msg: "OTP matched", userData: userFound })
-                    }
-                } else if (req.body.servicename == 'updateCustomer') {
-
-                }
-                else {
-                    res.send({ success: false, msg: "OTP not matched" })
-                }
+                //     }
+                // }
+                // else {
+                // res.send({ success: false, msg: "OTP not matched" })
+                // }
             }
-            // else if (req.body.servicename == 'customerUpdateOTP') {
-            //     const { oldMobile, isMobileChange, isMailChange, oldEmail, newMobile, newMail } = req.body.data[0];
-            //     const random_number = Math.floor(100000 + Math.random() * 900000);
-            //     if (isMobileChange) {
-            //         const userFound = await UserModel.findOne({ mobile: oldMobile })
-            //         if (userFound) {
-            //             await VerificationModel.insertMany({
-            //                 userId: userFound._id,
-            //                 mobile: newMobile,
-            //                 email: userFound.emailID,
-            //                 random_number: random_number
-            //             })
-            //             const mailMessage = await mailUtilCtrl.mailSend(userFound.emailID, random_number, false)
-            //             res.send({ success: true, msg: "OTP sent on user mail address" })
-            //         } else {
-            //             res.send({ success: false, msg: "user not found" })
-            //         }
-            //     } else if (isMailChange) {
-
-            //         const userFound = await UserModel.findOne({ emailID: oldEmail })
-            //         if (userFound) {
-            //             await VerificationModel.insertMany({
-            //                 userId: userFound._id,
-            //                 mobile: userFound.mobile,
-            //                 email: userFound.emailID,
-            //                 random_number: random_number
-            //             })
-            //             const mailMessage = await mailUtilCtrl.mailSend(userFound.emailID, random_number, false)
-            //             res.send({ success: true, msg: "OTP sent on user mail address" })
-            //         } else {
-            //             res.send({ success: false, msg: "user not found" })
-            //         }
-            //     } else {
-            //         return
-            //     }
-            // }
             else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
             }
