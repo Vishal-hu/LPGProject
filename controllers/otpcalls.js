@@ -41,20 +41,19 @@ router.post('/otp', async (req, res) => {
                         { email: email }
                     ],
                 })
-                // if (otpFound) {
-                //     let currentTime = moment(new Date());
-                //     let documentTime = otpFound.created_at;
-                //     let duration = moment.duration(currentTime.diff(documentTime));
-                //     var minutes = duration.asMinutes();
-                //     if (minutes > 10) {
-                //         res.send({ success: false, msg: 'OTP expired' })
-                //     } else {
+                if (otpFound) {
+                    let currentTime = moment(new Date());
+                    let documentTime = otpFound.created_at;
+                    let duration = moment.duration(currentTime.diff(documentTime));
+                    var minutes = duration.asMinutes();
+                    if (minutes > 10) {
+                        res.send({ success: false, msg: 'OTP expired' })
+                    } else {
                         res.send({ success: true, msg: "OTP matched", userData: userFound })
-                //     }
-                // }
-                // else {
-                // res.send({ success: false, msg: "OTP not matched" })
-                // }
+                    }
+                } else {
+                    res.send({ success: false, msg: "OTP not matched" })
+                }
             }
             else {
                 res.send({ success: false, msg: 'Please! provide a valid servicename' })
