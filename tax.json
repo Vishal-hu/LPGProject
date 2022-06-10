@@ -1,0 +1,19 @@
+{
+    "taxes": [
+        {
+            "tax": "5%",
+            "tax-description": "this is general tax"
+        },
+        {
+            "commercial_tax": "18%",
+            "commercial-tax-description": "Commercial Tax, currently referred to as Goods and Services Tax (GST) in India, is a tax that is levied on locally manufactured and imported goods and services, and contributes to the GDP of the country"
+        },
+        {
+            "free-delivery-description": "The delivery of the product directly to the recipient's address without charge to the recipient"
+        },
+        {
+            "standard-delivery-price": 300,
+            "standard-delivery-description": "A 'Standard Delivery' is an order placed to your normal lead time, delivered door to door, any time between 9am and 5pm working weekdays within that lead time."
+        }
+    ]
+}

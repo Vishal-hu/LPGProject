@@ -16,7 +16,7 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'html');
 const db = process.env.DBURL;
-
+const taxData = require('./tax.json');
 // prevent crashes
 process.on('unhandledRejection', (reason, p) => {
 })
@@ -50,6 +50,10 @@ app.get('/index', async (req, res) => {
 
 app.get('/latest-version', async (req, res) => {
     res.send({ success: true, latestVersion: '1.0', url: "https://www.google.com" })
+})
+
+app.get('/taxes', async (req, res) => {
+    res.send({ success: true, taxes: taxData.taxes })
 })
 
 app.get('/pay', function (req, res) {
