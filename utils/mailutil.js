@@ -20,13 +20,7 @@ const mailSend = async (toMailAddress, otp, attachments) => {
             to: toMailAddress,
             subject: `OTP from PremiumLPG`,
             html: `Order details from premium LPG`,
-            attachments: [
-                {
-                    filename: `${name}.pdf`,
-                    path: path.join(__dirname, `../../src/assets/books/${name}.pdf`),
-                    contentType: 'application/pdf',
-                },
-            ],
+            attachments: attachments
         };
     } else {
         mailOptions = {

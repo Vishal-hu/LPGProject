@@ -247,25 +247,11 @@ router.post('/postorder', async (req, res) => {
         }
       })
       const userFound = await UserModel.findOneAndUpdate({ _id: user.user_id }, { $set: { isSubscribed: true } })
-      // const filePath = path.join(__dirname,'../order.html')
-      // fs.readFile(filePath)
-      // async function read(err, bucontent){
-      //   var content = bucontent.toString();
-      //   content = content.replace("$$customerName$$", userFound.name);
-      //   pdf.create(content).toBuffer(async function(err, buffer){
-      //     if(err) return console.log(err);
-      //     var attachments = [
-      //       {
-      //         fileName :data +".pdf",
-      //         content:buffer,
-      //         contentType:"application/pdf"
-      //       }
-      //     ]
-      //   })
-      // }
+      await utils.pdfSender(bodyData.ORDERID, user.user_id)
+
       res.send({ msg: 'updated', Status: bodyData.STATUS })
     } else {
-      res.send({ success:false, msg: bodyData.RESPMSG })
+      res.send({ success: false, msg: bodyData.RESPMSG })
     }
 
   } catch (error) {

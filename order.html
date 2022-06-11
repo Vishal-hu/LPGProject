@@ -1,16 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrderPage</title>
     <style>
-        table tr td {
-            border: none;
-        }
-
         body {
             font-weight: unset;
             margin: 0px auto;
@@ -18,41 +10,34 @@
             box-sizing: border-box;
         }
 
-        .center {
-            margin-left: auto;
-            margin-right: auto;
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
-        h3 {
-            color: cornflowerblue;
-            margin: 0%;
-            font-weight: unset;
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
         }
 
-        h4 {
-            color: black;
-            margin: 0%;
-            font-weight: 100;
-            font-weight: unset;
-        }
-
-        h2 {
-            color: black;
-            margin: 0%;
-            font-weight: 100;
-            font-weight: unset;
+        tr:nth-child(even) {
+            background-color: #dddddd;
         }
 
         @media print {
             body {
                 -webkit-print-color-adjust: exact;
-                print-color-adjust:unset
+                print-color-adjust: unset
             }
         }
     </style>
 </head>
 
 <body>
+
     <div class="heading" style="width:100%;height:70px;background-color: rgb(168, 153, 153) !important;">
         <div style="float: left; height: 50px ;width: 33%;margin-top:10px;margin-left:10px;">
             <span>
@@ -81,85 +66,42 @@
             </span>
 
         </div>
-        <div style="width: 33%;height: 50px;margin-top:10px;float: left;text-align: center;line-height: 50px;">
-            <h2>Premium LPG</h2>
+        <div style="width: 33%;height: 50px;float: left;text-align: center;line-height: 20px; font-size: 20px;">
+            <h2 class="heading">Premium LPG</h2>
         </div>
 
     </div>
-    <div style="border: 1px solid black;width: 50%; margin: 0px auto;margin-top: 10px;">
 
-        <h3 style="color: black;font-size: 33px;
-    font-weight: unset !important; text-align: center;">Order Details</h3>
-        <hr>
-        <table class="center">
-            <tr>
-                <td>
-                    <h4>Customer Name:
-                    </h4>
+    <h3 style="color: black; margin: 0px; padding: 0px; background-color: azure;
+    font-weight: 600px; text-align: center;">Order Details</h3>
 
-                </td>
-                <td>
-                    <h3>$$customerName$$</h3>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Customer Address: </h4>
-
-                </td>
-                <td>
-                    <h3>$$customerAddress$$</h3>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Phone No.:</h4>
-                </td>
-                <td>
-                    <h3>$$phoneNo$$</h3>
-                </td>
-            </tr>
-        </table>
-        <hr>
-        <table class="center">
-            <tr>
-                <td style="width: 120px;">
-                    <h4>Product Name</h4>
-                </td>
-                <td style="width: 120px;text-align: center;">
-                    <h4>Quantity</h4>
-                </td>
-                <td style="width: 120px;text-align: end;">
-                    <h4>Product Price</h4>
-                </td>
-            </tr>
-        </table>
-        <hr>
-        <table class="center">
-            <tr>
-                <td style="width: 120px;">
-                    <h3>$productName</h3>
-                </td>
-                <td style="width: 120px;text-align: center;">
-                    <h3>$quantity</h3>
-                </td>
-                <td style="width: 120px;text-align: end;">
-                    <h3>$productPrice</h3>
-                </td>
-            </tr>
-        </table>
-        <hr>
-        <table class="center">
-            <tr>
-                <td>
-                    <h4 style="width: 300px;text-align: left;">Total:</h4>
-                </td>
-                <td>
-                    <h4>$total</h4>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <table>
+        <tr style="width: 33%;">
+            <th>Customer Name</th>
+            <th>Delivery Address</th>
+            <th>Phone Number</th>
+        </tr>
+        <tr>
+            <td>$$customerName$$</td>
+            <td>$$houseNo$$ $$block$$ $$locality$$ $$location$$ $$pincode$$</td>
+            <td>$$phoneNo$$</td>
+        </tr>
+    </table>
+    <table>
+        <tr style="width: 25%;">
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Product Size</th>
+            <th>Product Price</th>
+        </tr>
+        $$productContent$$
+    </table>
+    <table>
+        <tr>
+            <th style="width: 50%;">Total</th>
+            <td>$$total$$</td>
+        </tr>
+    </table>
 
 </body>
 
