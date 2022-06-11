@@ -5,6 +5,7 @@ const OrderSchema = new mongoose.Schema({
     product_id: [{ type: mongoose.Types.ObjectId, ref: 'product' }],
     cartProducts: Array,
     cart_price: [Number],
+    product_size: [String],
     quantity:[Number],
     isPaymentDone:{
         type:Boolean,

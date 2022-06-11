@@ -19,6 +19,7 @@ router.post('/order', async (req, res) => {
                 const productList = data.data[0].productId;
                 const cartProducts = data.data[0].cartProducts;
                 const cart_price = data.data[0].cart_price;
+                const product_size = data.data[0].product_size;
                 const quantity = data.data[0].quantity;
                 const totalPrice = data.data[0].totalPrice;
                 const orderAddress = data.data[0].orderAddress;
@@ -34,6 +35,7 @@ router.post('/order', async (req, res) => {
                             product_id: productList,
                             cartProducts,
                             cart_price,
+                            product_size,
                             quantity,
                             totalPrice,
                             orderAddress
