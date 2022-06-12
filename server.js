@@ -16,7 +16,6 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'html');
 const db = process.env.DBURL;
-const taxData = require('./tax.json');
 // prevent crashes
 process.on('unhandledRejection', (reason, p) => {
 })
@@ -48,18 +47,9 @@ app.get('/index', async (req, res) => {
     res.send('Hello')
 })
 
-app.get('/latest-version', async (req, res) => {
-    res.send({ success: true, latestVersion: '1.0', url: "https://www.google.com" })
-})
-
-app.get('/taxes', async (req, res) => {
-    res.send({ success: true, taxes: taxData.taxes })
-})
-
-app.get('/pay', function (req, res) {
-    res.sendFile(path.join(__dirname + '/views/index.html'));
-});
-
+// app.get('/pay', function (req, res) {
+//     res.sendFile(path.join(__dirname + '/views/index.html'));
+// });
 app.listen(port, function () {
     console.log("Server is listening at port:" + port);
 });
@@ -71,9 +61,11 @@ const otpcalls = require("./controllers/otpcalls");
 const order = require("./controllers/order");
 const payment = require("./controllers/payment");
 const payupayment = require('./controllers/payumoney');
+const utils = require('./controllers/utils');
 app.use("/customer", user);
 app.use("/admin", admin);
 app.use("/otpcalls", otpcalls);
 app.use("/ordercalls", order);
 app.use("/payment", payment);
 app.use("/payu", payupayment);
+app.use("/", utils);
