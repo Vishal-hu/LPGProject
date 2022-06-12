@@ -21,7 +21,7 @@ router.post('/utils', async (req, res) => {
                 res.send({ success: true, msg: 'new version inserted successfully' })
             } else if (data.servicename == 'latest-version') {
                 const data = await VersionModel.find({}).sort({ created_at: -1 }).select(['latestVersion', 'url'])
-                res.send({ success: true, data })
+                res.send({ success: true, data: data[0] })
             } else if (data.servicename == 'all-versions') {
                 const data = await VersionModel.find({})
                 res.send({ success: true, data })
@@ -48,7 +48,7 @@ router.post('/utils', async (req, res) => {
                 const data = await TaxModel.find({}).sort({ created_at: -1 })
                     .select(['tax', 'tax_description', 'commercial_tax', 'commercial_tax_description',
                         'free_delivery_description', 'standard_delivery_price', 'standard_delivery_description'])
-                res.send({ success: true, data })
+                res.send({ success: true, data: data[0] })
             } else if (data.servicename == 'all-taxes') {
                 const data = await TaxModel.find({})
                 res.send({ success: true, data })
