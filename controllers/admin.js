@@ -33,6 +33,7 @@ router.post('/products', async (req, res) => {
                 const productImageURL = req.body.productImageURL;
                 const important_information = req.body.important_information;
                 const quantity = req.body.quantity;
+                const security_price = req.body.security_price;
                 const product_size = req.body.product_size;
                 const product_type = req.body.product_type;
                 const productFound = await ProductModel.findOne({ product_name: product_name })
@@ -48,6 +49,7 @@ router.post('/products', async (req, res) => {
                         important_information,
                         important_information,
                         quantity,
+                        security_price,
                         product_size,
                         product_type
                     })
@@ -62,6 +64,7 @@ router.post('/products', async (req, res) => {
                 const productImageURL = req.body.productImageURL;
                 const important_information = req.body.important_information;
                 const quantity = req.body.quantity;
+                const security_price = req.body.security_price;
                 const product_size = req.body.product_size;
                 const product_type = req.body.product_type;
 
@@ -77,6 +80,7 @@ router.post('/products', async (req, res) => {
                             productImageURL: productImageURL,
                             important_information: important_information,
                             quantity: quantity,
+                            security_price: security_price,
                             product_size: product_size,
                             product_type: product_type
                         }

@@ -8,6 +8,7 @@ const ProductSchema = new mongoose.Schema({
     productImageURL: Array,
     important_information: String,
     quantity: Number,
+    security_price: [Number],
     product_size: [String],
     product_type: String,
     created_at: {
